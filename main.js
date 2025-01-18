@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sendButton.disabled = true; // Disable the button to prevent multiple clicks
 
       try {
-        const response = await fetch("https://v-back.vercel.app/send", {
+        const response = await fetch("https://us-central1-make-1d162.cloudfunctions.net/app/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, message }),
