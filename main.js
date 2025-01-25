@@ -367,3 +367,42 @@ downloadBtn.addEventListener("click", () => {
     path: "tick.json", // Replace with your animation JSON file path
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const BACKEND_URL = "https://zest-satin-ton.glitch.me";
+
+  // Check if the user already has a unique ID
+  let userId = localStorage.getItem("userId");
+
+  if (!userId) {
+      // Generate a unique ID for the user
+      userId = `user-${Date.now()}-${Math.random().toString(36).substring(2)}`;
+      localStorage.setItem("userId", userId);
+  }
+
+  // Track the visitor on the backend
+  fetch(`${BACKEND_URL}/track`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+  })
+      .then((response) => {
+          if (response.ok) {
+              console.log("Visitor tracked successfully");
+          } else {
+              console.error("Failed to track visitor");
+          }
+      })
+      .catch((error) => {
+          console.error("Error tracking visitor:", error);
+      });
+
+  // WebSocket connection for real-time updates
+  const visitorCounter = document.getElementById("visitor-counter");
+  const socket = new WebSocket(BACKEND_URL.replace("https", "wss"));
+
+  socket.addEventListener("message", (event) => {
+      const data = JSON.parse(event.data);
+      visitorCounter.textContent = `Visitors: ${data.visitors}`;
+  });
+});

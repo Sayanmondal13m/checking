@@ -1188,3 +1188,12 @@ img {
 
 
 
+.visitor-counter {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--second-color);
+  background-color: var(--first-color);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+}
