@@ -48,13 +48,13 @@ const sr = ScrollReveal({
     distance: '60px',
     duration: 2000,
     delay: 200,
-//     reset: true
+    reset: true
 });
 
 sr.reveal('.home__data, .about__img, .skills__subtitle, .skills__text',{}); 
 sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400}); 
 sr.reveal('.icon',{ interval: 200}); 
-sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200}); 
+sr.reveal('.skills__data, .work__img, .contact__input, .wrapper-no4',{interval: 200}); 
 
 /*===== COUNTING ANIMATION IN SKILLS =====*/
 const skillElements = document.querySelectorAll('.skills__data'); // Each skill row
@@ -336,5 +336,34 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
           text.innerHTML = 'SEND';
       }
+  });
+});
+
+const downloadBtn = document.getElementById("download-btn");
+const tickAnimation = document.getElementById("tick-animation");
+
+downloadBtn.addEventListener("click", () => {
+  // Trigger file download
+  const filePath = "assets/m2e.pdf"; // Replace with your actual file path
+  const anchor = document.createElement("a");
+  anchor.href = filePath;
+  anchor.download = "myfile.pdf";
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+
+  // Make the button invisible while keeping its space
+  downloadBtn.classList.add("hidden");
+
+  // Show the Lottie animation
+  tickAnimation.style.display = "block";
+
+  // Trigger Lottie animation
+  lottie.loadAnimation({
+    container: tickAnimation, // Element to render the animation
+    renderer: "svg",
+    loop: true,
+    autoplay: true,
+    path: "tick.json", // Replace with your animation JSON file path
   });
 });
