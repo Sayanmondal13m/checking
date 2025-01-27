@@ -368,41 +368,20 @@ downloadBtn.addEventListener("click", () => {
   });
 });
 
+const BACKEND_URL = "8.up.railwa"; // Replace with the deployed URL for production
+const socket = new WebSocket(BACKEND_URL.replace("http", "ws"));
+
 document.addEventListener("DOMContentLoaded", () => {
-  const BACKEND_URL = "https://zest-satin-ton.glitch.me";
+    fetch(`${BACKEND_URL}/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: localStorage.getItem("userId") || "guest-user" }),
+    })
+        .then(() => console.log("Visitor tracked successfully"))
+        .catch((error) => console.error("Error tracking visitor:", error));
+});
 
-  // Check if the user already has a unique ID
-  let userId = localStorage.getItem("userId");
-
-  if (!userId) {
-      // Generate a unique ID for the user
-      userId = `user-${Date.now()}-${Math.random().toString(36).substring(2)}`;
-      localStorage.setItem("userId", userId);
-  }
-
-  // Track the visitor on the backend
-  fetch(`${BACKEND_URL}/track`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-  })
-      .then((response) => {
-          if (response.ok) {
-              console.log("Visitor tracked successfully");
-          } else {
-              console.error("Failed to track visitor");
-          }
-      })
-      .catch((error) => {
-          console.error("Error tracking visitor:", error);
-      });
-
-  // WebSocket connection for real-time updates
-  const visitorCounter = document.getElementById("visitor-counter");
-  const socket = new WebSocket(BACKEND_URL.replace("https", "wss"));
-
-  socket.addEventListener("message", (event) => {
-      const data = JSON.parse(event.data);
-      visitorCounter.textContent = `Visitors: ${data.visitors}`;
-  });
+socket.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+    document.getElementById("visitor-counter").textContent = `Visitors: ${data.visitors}`;
 });
