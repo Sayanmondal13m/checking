@@ -368,7 +368,7 @@ downloadBtn.addEventListener("click", () => {
   });
 });
 
-const BACKEND_URL = "8.up.railwa"; // Replace with the deployed URL for production
+const BACKEND_URL = "https://railway-1-production-34d8.up.railway.app"; // Replace with the deployed URL for production
 const socket = new WebSocket(BACKEND_URL.replace("http", "ws"));
 
 document.addEventListener("DOMContentLoaded", () => {
